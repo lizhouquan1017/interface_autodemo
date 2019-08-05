@@ -75,12 +75,16 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/submitPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
+        responsecode = int(res['responseCode'])
+        success = int(res['success'])
+        result = int(res['result'])
         purchase_return_order_num = res['result']['orderCode']
         purchase_return_order_id = res['result']['id']
         ReadData().write_data('purchase_return_order', 'id', purchase_return_order_id)
         ReadData().write_data('purchase_return_order', 'ordernum', purchase_return_order_num)
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
+        self.assertNotEqual(result, None, '发送请求失败')
 
     def test_00102_submitpurchasereturnorder(self):
         """采购退货单提交接口（直接退货正常）"""
@@ -107,12 +111,16 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/submitPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
+        responsecode = int(res['responseCode'])
+        success = int(res['success'])
+        result = int(res['result'])
         purchase_order_num = res['result']['orderCode']
         purchase_order_id = res['result']['id']
         ReadData().write_data('purchase_return_order', 'id', purchase_order_id)
         ReadData().write_data('purchase_return_order', 'ordernum', purchase_order_num)
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
+        self.assertNotEqual(result, None, '发送请求失败')
 
     def test_00201_cancelpurchaseorder(self):
         """作废采购退货单接口（正常）"""
@@ -123,8 +131,10 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/cancelPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        success = res['success']
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
 
     def test_00202_cancelpurchasereturnorder(self):
         """作废采购退货单接口（已作废订单id）"""
@@ -135,26 +145,26 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/cancelPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
-        self.assertEqual(responseCode, 1001, '发送请求失败')
-        self.assertEqual(responseMsg, '采购退货单已作废!', '发送请求失败')
+        self.assertEqual(responsecode, 1001, '发送请求失败')
+        self.assertEqual(responsemsg, '采购退货单已作废!', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     def test_00203_cancelpurchasereturnorder(self):
         """作废采购退货单接口（采购退货单id为空）"""
         data = {
-            "id": ""  # 采购订单id
+            "id": None  # 采购订单id
         }
         url = self.base_url + '/order/purchaseReturnOrder/cancelPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '采购退货单号不能为空', '发送请求失败')
+        self.assertEqual(responsecode, 406, '发送请求失败')
+        self.assertEqual(responsemsg, '采购退货单号不能为空', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     # 有争议问题
@@ -166,12 +176,8 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + 'order/purchaseReturnOrder/cancelPurchaseReturnOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
         success = res['success']
         print(res)
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '订单号不能为空', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     def test_00301_querypurchasereturnInfo(self):
@@ -183,10 +189,13 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/queryPurchaseReturnInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        success = int(res['success'])
+        result = int(res['result'])
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertNotEqual(result, None, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
 
-    # 有争议问题
     def test_00302_querypurchasereturnInfo(self):
         """采购退货单详情查询接口（采购退货单id错误）"""
         data = {
@@ -195,24 +204,27 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/queryPurchaseReturnInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        print(res)
-        # self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        success = int(res['success'])
+        result = int(res['result'])
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
+        self.assertEqual(result, None, '发送请求失败')
 
     def test_00303_querypurchasereturnInfo(self):
         """采购退货单详情查询接口（采购退货单id为空）"""
         data = {
-            "id": ""  # 采购订单id
+            "id": None  # 采购订单id
         }
         url = self.base_url + '/order/purchaseReturnOrder/queryPurchaseReturnInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
         print(res)
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '订单号不能为空', '发送请求失败')
+        self.assertEqual(responsecode, 406, '发送请求失败')
+        self.assertEqual(responsemsg, '订单号不能为空', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     def test_00401_querypurchasereturnorderList(self):
@@ -225,9 +237,12 @@ class PurchaseReturnOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseReturnOrder/queryPurchaseReturnOrderList'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        print(res)
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        success = res['success']
+        result = res['result']
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertNotEqual(result, None, '发送请求失败')
+        self.assertEqual(success, True, '发送请求失败')
 
     def tearDown(self):
         pass

@@ -42,12 +42,12 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/submitPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
+        responsecode = int(res['responseCode'])
         purchase_order_num = res['result']['orderCode']
         purchase_order_id = res['result']['id']
         ReadData().write_data('purchase_order', 'id', purchase_order_id)
         ReadData().write_data('purchase_order', 'ordernum', purchase_order_num)
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        self.assertEqual(responsecode, 200, '发送请求失败')
 
     def test_00201_cancelpurchaseorder(self):
         """作废采购单接口（正常）"""
@@ -58,8 +58,8 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        self.assertEqual(responsecode, 200, '发送请求失败')
 
     def test_00202_cancelpurchaseorder(self):
         """作废采购单接口（已作废订单id）"""
@@ -70,26 +70,26 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
-        self.assertEqual(responseCode, 1001, '发送请求失败')
-        self.assertEqual(responseMsg, '当前订单已作废,不可重复作废', '发送请求失败')
+        self.assertEqual(responsecode, 1001, '发送请求失败')
+        self.assertEqual(responsemsg, '当前订单已作废,不可重复作废', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     def test_00203_cancelpurchaseorder(self):
         """作废采购单接口（采购单id为空）"""
         data = {
-            "id": ""  # 采购订单id
+            "id": None  # 采购订单id
         }
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '订单号不能为空', '发送请求失败')
+        self.assertEqual(responsecode, 406, '发送请求失败')
+        self.assertEqual(responsemsg, '订单号不能为空', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     # 有争议问题
@@ -101,12 +101,10 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsecode = int(res['responseCode'])
         success = res['success']
         print(res)
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '订单号不能为空', '发送请求失败')
+        self.assertEqual(responsecode, 1001, '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
 
     def test_00301_querypurchaseInfo(self):
@@ -118,8 +116,12 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        result = res['result']
+        success = res['success']
+        self.assertNotEqual(result, None)
+        self.assertEqual(success, True)
+        self.assertEqual(responsecode, 200, '发送请求失败')
 
     # 有争议问题
     def test_00302_querypurchaseInfo(self):
@@ -130,9 +132,12 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        print(res)
-        # self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        result = res['result']
+        success = res['success']
+        self.assertEqual(success, True)
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(result, None)
 
     def test_00303_querypurchaseInfo(self):
         """采购单详情查询接口（采购单id为空）"""
@@ -142,13 +147,14 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        responseCode = int(res['responseCode'])
-        responseMsg = res['responseMsg']
+        responsesode = int(res['responseCode'])
+        responsemsg = res['responseMsg']
         success = res['success']
-        print(res)
-        self.assertEqual(responseCode, 406, '发送请求失败')
-        self.assertEqual(responseMsg, '采购单id不能为空', '发送请求失败')
+        result = res['result']
+        self.assertEqual(responsesode, 406, '发送请求失败')
+        self.assertEqual(responsemsg, '采购单id不能为空', '发送请求失败')
         self.assertEqual(success, False, '发送请求失败')
+        self.assertEqual(result, None)
 
     def test_00401_querypurchaseorderList(self):
         """采购单列表查询接口（正常）"""
@@ -160,9 +166,12 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseOrderList'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
-        print(res)
-        responseCode = int(res['responseCode'])
-        self.assertEqual(responseCode, 200, '发送请求失败')
+        responsecode = int(res['responseCode'])
+        success = res['success']
+        result = res['result']
+        self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success, True)
+        self.assertNotEqual(result, None)
 
     def tearDown(self):
         pass
