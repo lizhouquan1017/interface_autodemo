@@ -3,7 +3,7 @@
 import configparser
 from os import path
 
-""" 通过当前目录定位cfg.ini的文件位置"""
+
 parent_path = path.dirname(path.dirname(__file__))
 final_path = path.join(parent_path, "testFile\data.ini")
 

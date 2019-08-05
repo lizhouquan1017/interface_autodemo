@@ -2,7 +2,6 @@
 
 import configparser
 from os import path
-# from tools.base import BaseView
 
 parent_path = path.dirname(path.dirname(__file__))
 final_path = path.join(parent_path, "sql\purchase.ini")
@@ -14,8 +13,8 @@ class ReadPurchase(object):
         self.cof = configparser.ConfigParser()
         self.cof.read(final_path, encoding='utf-8')
 
-    def get_purchase_order_id(self):
-        sql = self.cof.get('id', 'sql')
+    def get_sql(self, section, key):
+        sql = self.cof.get(section, key)
         return sql
 
     def write_data(self, section, key, value):
@@ -25,7 +24,7 @@ class ReadPurchase(object):
 
 if __name__ == '__main__':
     data = ReadPurchase()
-    api_info = data.get_purchase_order_id()
+    api_info = data.get_sql('id', 'sql')
     print(api_info)
 
 
