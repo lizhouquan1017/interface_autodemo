@@ -16,7 +16,7 @@ discover = unittest.defaultTestLoader.discover(test_dir, pattern="test_*.py")
 
 
 if __name__ == "__main__":
-    # GetToken().login()
+    GetToken().login()
     with open(report_name, "wb") as f:
         runner = HTMLTestRunner(stream=f, title='接口自动化测试报告', description='用例执行情况:')
         runner.run(discover)

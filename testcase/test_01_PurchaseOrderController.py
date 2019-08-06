@@ -42,6 +42,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/submitPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         purchase_order_num = res['result']['orderCode']
         purchase_order_id = res['result']['id']
@@ -58,8 +59,11 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
+        success = res['success']
         self.assertEqual(responsecode, 200, '发送请求失败')
+        self.assertEqual(success,True)
 
     def test_00202_cancelpurchaseorder(self):
         """作废采购单接口（已作废订单id）"""
@@ -70,6 +74,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         responsemsg = res['responseMsg']
         success = res['success']
@@ -85,6 +90,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/cancelPurchaseOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         responsemsg = res['responseMsg']
         success = res['success']
@@ -116,6 +122,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         result = res['result']
         success = res['success']
@@ -132,6 +139,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         result = res['result']
         success = res['success']
@@ -147,6 +155,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsesode = int(res['responseCode'])
         responsemsg = res['responseMsg']
         success = res['success']
@@ -166,6 +175,7 @@ class PurchaseOrderController(unittest.TestCase):
         url = self.base_url + '/order/purchaseOrder/queryPurchaseOrderList'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         result = res['result']

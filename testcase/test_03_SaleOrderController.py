@@ -56,6 +56,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/submitSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         sale_order_num = res['result']['orderCode']
         sale_order_id = res['result']['id']
         ReadData().write_data('sales_order', 'id', sale_order_id)
@@ -106,6 +107,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/cancelledSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         order_num = res['result']['orderCode']
         order_id = res['result']['id']
@@ -136,6 +138,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/queryCancelledSaleOrderById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         responsemsg = res['responseMsg']
@@ -152,6 +155,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/batchCleanCancelledSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         self.assertEqual(responsecode, 200, '发送请求失败')
@@ -165,6 +169,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/batchCleanCancelledSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         responsemsg = res['responseMsg']
@@ -180,6 +185,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/batchCleanCancelledSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         responsemsg = res['responseMsg']
@@ -212,6 +218,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/querySaleOrderInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         result = res['result']
@@ -227,6 +234,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/querySaleOrderInfoById'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responscode = int(res['responseCode'])
         success = res['success']
         self.assertEqual(responscode, 406, '发送请求失败')
@@ -256,6 +264,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/cancelSaleOrder'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responsecode = int(res['responseCode'])
         success = res['success']
         responsemsg = res['responseMsg']
@@ -306,6 +315,7 @@ class SaleOrderController(unittest.TestCase):
         url = self.base_url + '/order/saleOrder/querySaleOrderList'
         response = requests.post(headers=self.header, url=url, data=data)
         res = response.json()
+        print(res)
         responseCode = int(res['responseCode'])
         success = res['success']
         result = res['result']
